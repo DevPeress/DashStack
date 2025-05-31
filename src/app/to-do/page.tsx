@@ -8,6 +8,7 @@ import { useState } from "react";
 import Image from "next/image" 
 
 interface Lista {
+  verify: boolean,
   fav: boolean,
   texto: string
 }
@@ -15,14 +16,22 @@ interface Lista {
 export default function Home() {
   const [texto,setTexto] = useState("")
   const [lista,setLista] = useState<Lista[]>([
-    { fav: false, texto: "Teste" },
-    { fav: false, texto: "Teste 2" },
+    { verify: false, fav: false, texto: "Teste" },
+    { verify: false, fav: false, texto: "Teste 2" },
   ])
 
   const alterarFav = (index: number) => {
     setLista((prevDados) =>
       prevDados.map((item, i) =>
         i === index ? { ...item, fav: !item.fav } : item
+      )
+    );
+  };
+
+   const alterarCheck = (index: number) => {
+    setLista((prevDados) =>
+      prevDados.map((item, i) =>
+        i === index ? { ...item, verify: !item.verify } : item
       )
     );
   };
@@ -34,7 +43,7 @@ export default function Home() {
   const salvar = () => {
     setLista((prevDados) => [
       ...prevDados,
-      { fav: false, texto: texto }
+      { verify:false, fav: false, texto: texto }
     ])
     setTexto("")
   }
@@ -52,34 +61,63 @@ export default function Home() {
         </div>
         <div className="flex absolute top-[12vw] w-[82vw] max-h-[33vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap">
           {lista.map((item, index) => {
+            const verify = item.verify
 
             return (
-              <div key={index} className="flex relative w-full min-h-[4.844vw] h-auto bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center overflow-hidden mb-[.75vw]">
-                <div className="absolute left-[2vw] w-[1.563vw] h-[1.563vw] bg-[#323D50] border-[#313D4F] border-[0.104vw] rounded"></div>
+              <div key={index} className="flex relative w-full min-h-[4.844vw] h-auto border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center overflow-hidden mb-[.75vw]" style={{ background: verify ? '#4880FF' : '#273142' }}> 
+                <div className="flex absolute left-[2vw] w-[1.563vw] h-[1.563vw] border-[0.104vw] rounded items-center justify-center" onClick={() => alterarCheck(index)} style={{ background: verify ? '' : '#323D50', borderColor: verify ? '#FFFFFF' : '#313D4F' }}>
+                  {verify ? 
+                    <>
+                      <Image
+                        src={'/Shape.svg'}
+                        alt="Estrela do Check"
+                        width={14}
+                        height={10}
+                        priority
+                      />
+                    </> : ""
+                  }
+                </div>
                 <div className="flex relative w-[65vw] h-auto left-[-2vw]">
                   <h1 className="flex relative w-full h-auto text-[#FFFFFF] text-[0.833vw] font-semibold mt-[.5vw] mb-[.5vw]">{item.texto}</h1>
                 </div>
 
                 <div className="flex absolute w-[4vw] right-[5vw] items-center justify-between">
-                  <Image
-                    className="hover:scale-110"
-                    src={item.fav ? '/Star-F.svg' : '/Star.svg'}
-                    alt="Estrela do To-DO"
-                    width={26}
-                    height={26}
-                    priority
-                    onClick={() => alterarFav(index)}
-                  />
+                  {verify ? 
+                    <> 
+                      <Image
+                        className="hover:scale-110"
+                        src={'/Lixeira.svg'}
+                        alt="Estrela do To-DO"
+                        width={65}
+                        height={40}
+                        priority
+                        onClick={() => apagar(index)}
+                      />
+                    </>
+                    : 
+                    <>
+                      <Image
+                        className="hover:scale-110"
+                        src={item.fav ? '/Star-F.svg' : '/Star.svg'}
+                        alt="Estrela do To-DO"
+                        width={26}
+                        height={26}
+                        priority
+                        onClick={() => alterarFav(index)}
+                      />
 
-                  <Image
-                    className="hover:scale-110"
-                    src="/Delete Todo.svg"
-                    alt="Delete do To-DO"
-                    width={30}
-                    height={30}
-                    priority
-                    onClick={() => apagar(index)}
-                  />
+                      <Image
+                        className="hover:scale-110"
+                        src="/Delete Todo.svg"
+                        alt="Delete do To-DO"
+                        width={30}
+                        height={30}
+                        priority
+                        onClick={() => apagar(index)}
+                      />
+                    </>
+                  }
                 </div>
               </div>
             )
