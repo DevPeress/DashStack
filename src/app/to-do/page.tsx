@@ -14,11 +14,12 @@ interface Lista {
 }
 
 export default function Home() {
-  const [texto,setTexto] = useState("")
+  const [texto,setTexto] = useState<string>("")
   const [lista,setLista] = useState<Lista[]>([
     { verify: false, fav: false, texto: "Teste" },
     { verify: false, fav: false, texto: "Teste 2" },
   ])
+  const [acao,setAcao] = useState<boolean>(false)
 
   const alterarFav = (index: number) => {
     setLista((prevDados) =>
@@ -41,11 +42,19 @@ export default function Home() {
   };
 
   const salvar = () => {
-    setLista((prevDados) => [
-      ...prevDados,
-      { verify:false, fav: false, texto: texto }
-    ])
-    setTexto("")
+    if (acao) {
+      if (texto.length < 1) {
+        return
+      }
+      setLista((prevDados) => [
+        ...prevDados,
+        { verify:false, fav: false, texto: texto }
+      ])
+      setTexto("")
+      setAcao(false)
+    } else {
+      setAcao(true)
+    }
   }
 
   return (
@@ -54,12 +63,24 @@ export default function Home() {
       <SideBar />
 
       <Pagina>
-        <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF]">Add New To-Do</h1>
-        <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115" onClick={salvar}>Salvar</button>
-        <div className="flex absolute top-[6vw] w-[82vw] h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center">
-          <input className="absolute w-[22.656vw] h-[2.083vw] p-5 left-[2vw] bg-[#323D4E] border-[0.031vw] border-[#CFCFCF] text-[0.833vw] text-[#FFFFFF] font-semibold rounded-[0.313vw] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
-        </div>
-        <div className="flex absolute top-[12vw] w-[82vw] max-h-[33vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap">
+        {acao ? 
+          <>
+          <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF]">Add New To-Do</h1>
+            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115" onClick={salvar}>Salvar</button>
+            <div className="flex absolute top-[6vw] w-[82vw] h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center">
+              <input className="absolute w-[22.656vw] h-[2.083vw] p-5 left-[2vw] bg-[#323D4E] border-[0.031vw] border-[#CFCFCF] text-[0.833vw] text-[#FFFFFF] font-semibold rounded-[0.313vw] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
+            </div>
+          </> 
+          
+          : 
+          
+          <>
+            <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF]">To-Do List</h1>
+            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115" onClick={salvar}>Add New Tesk</button>
+          </>
+        }
+
+        <div className="flex absolute w-[82vw] max-h-[33vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap" style={{ top: acao ? "12vw" : "5vw"}}>
           {lista.map((item, index) => {
             const verify = item.verify
 
