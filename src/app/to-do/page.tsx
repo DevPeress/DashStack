@@ -45,19 +45,19 @@ export default function Home() {
       <SideBar />
 
       <Pagina>
-        <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[32px] text-[#FFFFFF]">Add New To-Do</h1>
-        <button className="absolute right-[2.7vw] top-[2vw] w-[147px] h-[48px] bg-[#4379EE] font-bold text-[14px] text-[#FFFFFF] rounded-[6px] hover:scale-115" onClick={salvar}>Salvar</button>
-        <div className="flex absolute top-[6vw] w-[1540px] h-[93px] bg-[#273142] border-[1.2px] border-[#313D4F] rounded-[12px] items-center justify-center">
-          <input className="absolute w-[435px] h-[40px] p-5 left-[2vw] bg-[#323D4E] border-[.6px] border-[#CFCFCF] text-[16px] font-semibold rounded-[6px] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
+        <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF]">Add New To-Do</h1>
+        <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115" onClick={salvar}>Salvar</button>
+        <div className="flex absolute top-[6vw] w-[80.208vw] h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center">
+          <input className="absolute w-[22.656vw] h-[2.083vw] p-5 left-[2vw] bg-[#323D4E] border-[0.031vw] border-[#CFCFCF] text-[0.833vw] text-[#FFFFFF] font-semibold rounded-[0.313vw] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
         </div>
-        <div className="flex absolute top-[12vw] w-[1540px] max-h-[33vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap">
+        <div className="flex absolute top-[12vw] w-[80.208vw] max-h-[33vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap">
           {lista.map((item, index) => {
 
             return (
-              <div key={index} className="flex relative w-full min-h-[93px] h-auto bg-[#273142] border-[1.2px] border-[#313D4F] rounded-[12px] items-center justify-center overflow-hidden mb-[.75vw]">
-                <div className="absolute left-[2vw] w-[30px] h-[30px] bg-[#323D50] border-[#313D4F] border-[2px] rounded"></div>
+              <div key={index} className="flex relative w-full min-h-[4.844vw] h-auto bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center overflow-hidden mb-[.75vw]">
+                <div className="absolute left-[2vw] w-[1.563vw] h-[1.563vw] bg-[#323D50] border-[#313D4F] border-[0.104vw] rounded"></div>
                 <div className="flex relative w-[65vw] h-auto left-[-2vw]">
-                  <h1 className="flex relative w-full h-auto text-[#FFFFFF] text-[16px] font-semibold mt-[.5vw] mb-[.5vw]">{item.texto}</h1>
+                  <h1 className="flex relative w-full h-auto text-[#FFFFFF] text-[0.833vw] font-semibold mt-[.5vw] mb-[.5vw]">{item.texto}</h1>
                 </div>
 
                 <div className="flex absolute w-[4vw] right-[5vw] items-center justify-between">
