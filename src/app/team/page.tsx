@@ -15,7 +15,7 @@ interface Team {
 }
 
 export default function Home() {
-  const [funcionarios,setFuncionarios] = useState<Team[]>([
+  const [funcionarios] = useState<Team[]>([
     { nome: "Fabrício Peres", cargo: "CEO", email: "fabricioperesdsantos@gmail.com", foto: "/User.svg" },
     { nome: "Fabrício Peres", cargo: "CEO", email: "fabricioperesdsantos@gmail.com", foto: "/User.svg" }
   ])

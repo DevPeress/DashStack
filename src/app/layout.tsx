@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,6 +12,12 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
     <html lang="en">
       <body className="overflow-hidden">
         {children}
+
+        <Toaster toastOptions={{
+          style: {
+            userSelect: "none"
+          }
+        }}/>
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ import { SideBar } from "@/components/sidebar";
 import { useState } from "react";
 
 import Image from "next/image" 
+import toast from "react-hot-toast";
 
 interface Lista {
   verify: boolean,
@@ -22,6 +23,9 @@ export default function Home() {
   const [acao,setAcao] = useState<boolean>(false)
 
   const alterarFav = (index: number) => {
+    const isFav = lista[index].fav;
+    toast.success(isFav ? "Retirado dos favoritos" : "Adicionado aos favoritos");
+
     setLista((prevDados) =>
       prevDados.map((item, i) =>
         i === index ? { ...item, fav: !item.fav } : item
@@ -30,6 +34,9 @@ export default function Home() {
   };
 
    const alterarCheck = (index: number) => {
+    const isFav = lista[index].verify;
+    toast.success(isFav ? "Retirada a verificação!" : "Adicionado aos verificados");
+    
     setLista((prevDados) =>
       prevDados.map((item, i) =>
         i === index ? { ...item, verify: !item.verify } : item
@@ -39,12 +46,13 @@ export default function Home() {
 
   const apagar = (index: number) => {
     setLista((prevDados) => prevDados.filter((_, i) => i !== index));
+    return toast.success("A fazer apagado!");
   };
 
   const salvar = () => {
     if (acao) {
       if (texto.length < 1) {
-        return
+        return toast.error("Precisa conter algum a fazer!!")
       }
       setLista((prevDados) => [
         ...prevDados,
@@ -52,6 +60,7 @@ export default function Home() {
       ])
       setTexto("")
       setAcao(false)
+      return toast.success("Novo a fazer adicionado na lista!")
     } else {
       setAcao(true)
     }
