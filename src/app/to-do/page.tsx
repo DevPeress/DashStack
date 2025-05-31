@@ -65,9 +65,9 @@ export default function Home() {
       <Pagina>
         {acao ? 
           <>
-          <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF]">Add New To-Do</h1>
-            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115" onClick={salvar}>Salvar</button>
-            <div className="flex absolute top-[6vw] w-[82vw] h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center">
+            <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF] select-none">Add New To-Do</h1>
+            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115 select-none" onClick={salvar}>Salvar</button>
+            <div className="flex absolute top-[6vw] w-[82vw] h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center select-none">
               <input className="absolute w-[22.656vw] h-[2.083vw] p-5 left-[2vw] bg-[#323D4E] border-[0.031vw] border-[#CFCFCF] text-[0.833vw] text-[#FFFFFF] font-semibold rounded-[0.313vw] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
             </div>
           </> 
@@ -75,8 +75,8 @@ export default function Home() {
           : 
           
           <>
-            <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF]">To-Do List</h1>
-            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115" onClick={salvar}>Add New Tesk</button>
+            <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF] select-none">To-Do List</h1>
+            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115 select-none" onClick={salvar}>Add New Tesk</button>
           </>
         }
 
@@ -90,6 +90,7 @@ export default function Home() {
                   {verify ? 
                     <>
                       <Image
+                        className="select-none"
                         src={'/Shape.svg'}
                         alt="Estrela do Check"
                         width={14}
@@ -107,7 +108,7 @@ export default function Home() {
                   {verify ? 
                     <> 
                       <Image
-                        className="hover:scale-110"
+                        className="select-none hover:scale-110"
                         src={'/Lixeira.svg'}
                         alt="Estrela do To-DO"
                         width={65}
@@ -119,7 +120,7 @@ export default function Home() {
                     : 
                     <>
                       <Image
-                        className="hover:scale-110"
+                        className="select-none hover:scale-110"
                         src={item.fav ? '/Star-F.svg' : '/Star.svg'}
                         alt="Estrela do To-DO"
                         width={26}
@@ -129,7 +130,7 @@ export default function Home() {
                       />
 
                       <Image
-                        className="hover:scale-110"
+                        className="select-none hover:scale-110"
                         src="/Delete Todo.svg"
                         alt="Delete do To-DO"
                         width={30}
