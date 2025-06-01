@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     const senha: string | null = searchParams.get("senha")
 
     if (!email || !senha) {
-        return NextResponse.json({ mensagem: "Email ou senha estão incorretos!" }, { status: 404 });
+        return NextResponse.json({ mensagem: "Email ou senha estão incorretos!", status: 404 }, { status: 404 });
     }
 
     try {
@@ -19,19 +19,19 @@ export async function GET(req: Request) {
         });
 
         if (!conta) {
-            return NextResponse.json({ mensagem: "Email não possui conta!" }, { status: 404 });
+            return NextResponse.json({ mensagem: "Email não possui conta!", status: 404 }, { status: 404 });
         }
 
         const senhaProtegida = await Senhas("verificar", senha, conta.password)
 
         if (senhaProtegida) {
-            return NextResponse.json({ mensagem: "Login liberado!" }, { status: 404 });
+            return NextResponse.json({ mensagem: "Login liberado!", status: 200 }, { status: 200 });
         }
 
-        return NextResponse.json({ mensagem: "Email ou senha estão incorretos!" }, { status: 404 });
+        return NextResponse.json({ mensagem: "Email ou senha estão incorretos!", status: 404 }, { status: 404 });
     } catch (error) {
         console.error("[GET Login]: ", error);
-        return NextResponse.json({ mensagem: "Erro interno ao atualizar o to-do." },{ status: 500 });
+        return NextResponse.json({ mensagem: "Erro interno ao atualizar o to-do.", status: 404 },{ status: 500 });
     } finally {
         await prisma.$disconnect();
     }

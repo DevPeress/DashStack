@@ -19,22 +19,20 @@ export default function Home() {
   })
 
   const onSubmit = async (data: LoginSchema) => {
-    const verify = fetch('api/login', {
-      method: "POST",
-      body: JSON.stringify({ 
-        email: data.email,
-        senha: data.password
-      }),
-    })
+    const verify = fetch(`api/login?email=${data.email}&senha=${data.password}`)
 
     await toast.promise(
-      verify.then(res => {
-        if (!res) throw new Error();
-      }),
+      verify.then(res => res.json())
+      .then(dados => {
+        console.log(dados.status)
+        if (dados.status !== 201) {
+          throw new Error(dados.mensagem)
+        }
+      }), 
       {
         loading: 'Realizando o login...',
-        success: <b>Login efetuado com sucesso!!</b>,
-        error: <b>Email ou senha estão incorretos!</b>,
+        success: <b>Login efetuado com sucesso!</b>,
+        error: (err) => <b>{err.message}</b>,
       }
     );
   }
