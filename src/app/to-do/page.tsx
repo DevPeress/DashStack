@@ -64,7 +64,7 @@ export default function Home() {
       }),
       {
         loading: 'Efetuando a troca...',
-        success: <b>{isVerify ? "Retirado dos favoritos" : "Adicionado aos favoritos"}</b>,
+        success: <b>{isVerify ? "Retirado dos finalizados" : "Adicionado aos finalizados"}</b>,
         error: <b>Problema ao efetuar a troca</b>,
       }
     );
@@ -158,8 +158,8 @@ export default function Home() {
           <>
             <h1 className="absolute md:left-[2.7vw] lg:left-[2.7vw] md:top-[3vw] lg:top-[2vw] font-bold md:text-[3.2vw] lg:text-[1.667vw] text-[#FFFFFF] select-none">Add New To-Do</h1>
             <button className="absolute md:right-[2.7vw] lg:right-[2.7vw] md:top-[3vw] lg:top-[2vw] md:w-[12vw] lg:w-[7.656vw] md:h-[4vw] lg:h-[2.5vw] bg-[#4379EE] font-bold md:text-[1.4vw] lg:text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115 select-none" onClick={salvar}>Salvar</button>
-            <div className="flex absolute top-[6vw] w-[82vw] h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center select-none">
-              <input className="absolute w-[22.656vw] h-[2.083vw] p-5 left-[2vw] bg-[#323D4E] border-[0.031vw] border-[#CFCFCF] text-[0.833vw] text-[#FFFFFF] font-semibold rounded-[0.313vw] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
+            <div className="flex absolute md:top-[9vw] lg:top-[6vw] w-[82vw] md:h-[5.5vw] lg:h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center select-none">
+              <input className="absolute md:w-[35vw] lg:w-[22.656vw] md:h-[3.5vw] lg:h-[2.083vw] md:p-3 lg:p-5 left-[2vw] bg-[#323D4E] border-[0.031vw] border-[#CFCFCF] md:text-[1.6vw] lg:text-[0.833vw] text-[#FFFFFF] font-semibold rounded-[0.313vw] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
             </div>
           </> 
           
@@ -171,7 +171,7 @@ export default function Home() {
           </>
         }
 
-        <div className="flex absolute md:w-[82vw] lg:w-[82vw] md:max-h-[38vw] lg:max-h-[33vw] top-[12vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap">
+        <div className="flex absolute md:w-[82vw] lg:w-[82vw] md:max-h-[38vw] lg:max-h-[33vw] md:top-[15vw] lg:top-[12vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap">
           {typeof lista === "object" && lista.length > 0 && lista.map((item, index) => {
             const verify = item.verify
 
