@@ -18,6 +18,11 @@ export interface ProviderProps {
   children: ReactNode;
 }
 
+export interface ThemeContextType {
+  dark: boolean;
+  toggleTheme: () => void;
+}
+
 export interface Numeros {
   index: number,
   idt: number

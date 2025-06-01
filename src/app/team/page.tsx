@@ -6,7 +6,7 @@ import { SideBar } from "@/components/sidebar";
 
 import Image from "next/image" 
 import { useContext, useEffect, useState } from "react";
-import { ContratarTeamContext } from "./contratar";
+import { ContratarTeamContext } from "../../context/TeamContext";
 import { Pessoas } from "@/types/types";
 
 export default function Home() {

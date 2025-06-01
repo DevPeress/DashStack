@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 import { Pagina } from "@/components/pagina";
 import { SideBar } from "@/components/sidebar";
 import { useContext, useEffect, useState } from "react";
-import { ContratarContactContext } from "./contratar";
+import { ContratarContactContext } from "../../context/ContactContex";
 
 import Image from "next/image" 
 import { Pessoas } from "@/types/types";

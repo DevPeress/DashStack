@@ -1,8 +1,6 @@
+import { ThemeProvider } from "../context/ThemeContext";
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
-import { ContratarTeamProvider } from './team/contratar'
-import { ContratarContactProvider } from "./contact/contratar";
 
 export const metadata: Metadata = {
   title: "DashStack",
@@ -11,22 +9,6 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
-  return (
-    <html lang="en">
-      <body className="overflow-hidden">
-        <ContratarTeamProvider>
-          <ContratarContactProvider>
-            {children}
-
-            <Toaster toastOptions={{
-              style: {
-                userSelect: "none"
-              }
-            }}/>
-          </ContratarContactProvider>
-        </ContratarTeamProvider>
-      </body>
-    </html>
-  );
+export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
+  return <ThemeProvider>{children}</ThemeProvider>;
 }
