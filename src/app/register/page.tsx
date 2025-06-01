@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link';
 
 const userSchema = z.object({
   username: z.string().min(1, "Usuário é obrigatório"),
@@ -98,7 +99,7 @@ export default function Home() {
         </form>
 
         <h1 className="absolute bottom-[5vw] font-semibold text-[18px] text-[#202224] opacity-[65%]">
-          Já possui conta? <span className="text-[#5A8CFF] text-[18px] underline font-bold">Login</span>
+          Já possui conta? <Link href={'/login'} className="text-[#5A8CFF] text-[18px] underline font-bold">Login</Link>
         </h1>
       </div>
     </div>
