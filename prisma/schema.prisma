@@ -9,5 +9,8 @@ datasource db {
 
 model Usuario {
   id    Int    @id @default(autoincrement())
-  todo j
+  usuario String
+  email String
+  password String
+  todo Json
 }
