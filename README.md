@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 DashStack
 
-## Getting Started
+DashStack é um sistema de gerenciamento de vendas moderno e full-stack desenvolvido com **Next.js**, **TypeScript**, **Tailwind CSS**, **Prisma** e **MySQL**. A aplicação possui autenticação baseada em cookies, painel administrativo com gráficos interativos e funcionalidades para controle de vendas, produtos e usuários.
 
-First, run the development server:
+## 🧰 Tecnologias Utilizadas
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Prisma ORM](https://www.prisma.io/)
+- [MySQL](https://www.mysql.com/)
+- [Zod](https://zod.dev/)
+- [Next Auth](https://next-auth.js.org/)
+
+## ✨ Funcionalidades
+
+- 🔐 Autenticação com cookies
+- 📊 Painel to-do
+- 👥 Cadastro e gerenciamento de usuários
+- ⚙️ Integração com banco de dados via Prisma
+
+## ⚙️ Instalação
 
 ```bash
+# Clone o repositório
+git clone https://github.com/DevPeress/DashStack.git
+cd DashStack
+
+# Instale as dependências
+npm install
+
+# Configure o banco de dados (MySQL) no arquivo .env
+cp .env.example .env
+
+# Rode as migrações Prisma
+npx prisma migrate dev
+
+# Inicie o servidor de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔐 Variáveis de Ambiente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Configure seu `.env` com base no seguinte exemplo:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL="mysql://usuario:senha@localhost:3306/dashstack"
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXTAUTH_SECRET="sua-chave-secreta"
+```
 
-## Learn More
+> Você pode usar o comando `openssl rand -base64 32` para gerar um valor seguro para `NEXTAUTH_SECRET`.
 
-To learn more about Next.js, take a look at the following resources:
+## 🗂 Estrutura do Projeto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+📁 src
+ ┣ 📂 app         # Rotas e páginas (Next.js App Router)
+ ┣ 📂 components  # Componentes reutilizáveis
+ ┣ 📂 lib         # Funções auxiliares (cookies, auth, utils)
+ ┣ 📂 styles      # Estilos globais
+ ┣ 📂 prisma      # Esquema e seed do Prisma
+ ┣ 📂 public      # Imagens e arquivos estáticos
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧪 Testes
 
-## Deploy on Vercel
+> *Se estiver implementando testes, adicione instruções aqui com ferramentas como Jest, Vitest, ou Testing Library.*
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧠 Contribuição
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Sinta-se à vontade para abrir issues ou pull requests! Qualquer feedback é bem-vindo.
+
+```bash
+# Fork o projeto
+# Crie sua branch com a feature: git checkout -b minha-feature
+# Commit suas mudanças: git commit -m 'feat: minha nova feature'
+# Push para a branch: git push origin minha-feature
+```
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
