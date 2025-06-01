@@ -28,7 +28,7 @@ export function Contratar() {
     }
 
     return (
-        <div className="flex absolute w-[80.208vw] h-[38.75vw] top-[5vw] bg-[#273142] rounded-[0.417vw] items-center justify-center">
+        <div className="flex absolute w-[82vw] h-[38.75vw] top-[5vw] bg-[#273142] rounded-[0.417vw] items-center justify-center">
             <Image
                 className="absolute top-[5vw] select-none"
                 src={'/Photo.svg'}
