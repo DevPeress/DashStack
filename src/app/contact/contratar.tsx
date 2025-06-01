@@ -1,10 +1,20 @@
 'use client'
 
-import Image from "next/image" 
+import { createContext, useState, ReactNode } from "react";
+import Image from "next/image"
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+
+interface ContratarContactContextProps {
+    message: string;
+    showConfirm: (msg: string) => Promise<UserSchema | null>;
+}
+
+interface ContratarContactProviderProps {
+    children: ReactNode;
+}
 
 const userSchema = z.object({
     first: z.string().min(1, "Primeiro nome é obrigatório"),
@@ -17,69 +27,123 @@ const userSchema = z.object({
 
 type UserSchema = z.infer<typeof userSchema>
 
-export function Contratar() {
-    const { register, handleSubmit, formState: { errors } } = useForm<UserSchema>({
-        resolver: zodResolver(userSchema)
-    })
+export const ContratarContactContext = createContext<ContratarContactContextProps | undefined>(undefined);
 
-    const onSubmit = (data: UserSchema) => {
-        console.log(data)
-        toast.success("Conta criada com sucesso!")
+export const ContratarContactProvider = ({ children }: ContratarContactProviderProps) => {
+    const [message, setMessage] = useState<string>("");
+    const [resolveCallback, setResolveCallback] = useState<((data: UserSchema | null) => void) | null>(null);
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<UserSchema>({
+        resolver: zodResolver(userSchema)
+    });
+
+    const onSubmit = async (data: UserSchema) => {
+        const verify = fetch('/api/contact', {
+            method: "PUT",
+            body: JSON.stringify({
+                nome: data.first,
+                sobrenome: data.last,
+                email: data.email,
+                celular: data.phone,
+                date: data.date,
+                genero: data.gender
+            }),
+        });
+
+        await toast.promise(
+            verify
+                .then(res => res.json())
+                .then(dados => {
+                    if (dados.status !== 201) {
+                        throw new Error(dados.mensagem)
+                    }
+                }),
+            {
+                loading: 'Realizando o cadastro...',
+                success: <b>Cadastro realizado com sucesso!!</b>,
+                error: (err) => <b>{err.message}</b>,
+            }
+        );
+
+        if (resolveCallback) resolveCallback(data);
+        cleanup();
+        reset(); 
     }
 
+    const showConfirm = (msg: string): Promise<UserSchema | null> => {
+        setMessage(msg)
+        return new Promise((resolve) => {
+            setResolveCallback(() => resolve);
+        });
+    }
+
+    const cancelar = () => {
+        if (resolveCallback) resolveCallback(null);
+        cleanup();
+    }
+
+    const cleanup = () => {
+        setMessage("");
+        setResolveCallback(null);
+    };
+
     return (
-        <div className="flex absolute w-[82vw] h-[38.75vw] top-[5vw] bg-[#273142] rounded-[0.417vw] items-center justify-center">
-            <Image
-                className="absolute top-[5vw] select-none"
-                src={'/Photo.svg'}
-                alt="Foto para pessoa ou vazia"
-                width={80}
-                height={80}
-                priority
-            />
-            <form onSubmit={handleSubmit(onSubmit)} className="w-[40.625vw] grid grid-cols-2 gap-8">
-                <input
-                    type="text"
-                    placeholder="First Name"
-                    className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.first ? "border-pink-500" : "border-white"}`}
-                    {...register("first")}
-                />
+        <ContratarContactContext.Provider value={{ message, showConfirm }}>
+            {children}
+            {message && (
+                <div className="flex absolute md:w-[82.3vw] lg:w-[82.3vw] md:h-[92vw] lg:h-[38.75vw] md:top-[13vw] lg:top-[9vw] left-[15vw] bg-[#273142] rounded-[0.417vw] items-center justify-center z-50">
+                    <Image
+                        className="absolute md:top-[6vw] lg:top-[5vw] select-none"
+                        src={'/Photo.svg'}
+                        alt="Foto para pessoa ou vazia"
+                        width={80}
+                        height={80}
+                        priority
+                    />
+                    <form onSubmit={handleSubmit(onSubmit)} className="md:w-[75vw] lg:w-[40.625vw] grid grid-cols-2 gap-8">
+                        <input
+                            type="text"
+                            placeholder="First Name"
+                            className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.first ? "border-pink-500" : "border-white"}`}
+                            {...register("first")}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Last Name"
+                            className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.last ? "border-pink-500" : "border-white"}`}
+                            {...register("last")}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Email"
+                            className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.email ? "border-pink-500" : "border-white"}`}
+                            {...register("email")}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Phone Number"
+                            className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.phone ? "border-pink-500" : "border-white"}`}
+                            {...register("phone")}
+                        />
+                        <input
+                            type="date"
+                            placeholder="Date of Birth"
+                            className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.date ? "border-pink-500" : "border-white"}`}
+                            {...register("date")}
+                        />
+                        <select className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.gender ? "border-pink-500" : "border-white"}`} {...register("gender")}>
+                            <option value="">Selecione...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
 
-                <input
-                    type="text"
-                    placeholder="Last Name"
-                    className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.last ? "border-pink-500" : "border-white"}`}
-                    {...register("last")}
-                />
-
-                <input
-                    type="text"
-                    placeholder="Email"
-                    className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.email ? "border-pink-500" : "border-white"}`}
-                    {...register("email")}
-                />
-
-                <input
-                    type="text"
-                    placeholder="Phone Number"
-                    className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.phone ? "border-pink-500" : "border-white"}`}
-                    {...register("phone")}
-                />
-
-                <input
-                    type="date"
-                    placeholder="Date of Birth"
-                    className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.date ? "border-pink-500" : "border-white"}`}
-                    {...register("date")}
-                />
-
-                <select className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.gender ? "border-pink-500" : "border-white"}`} {...register("gender")}>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-
-                <button type="submit" className="absolute w-[40.625vw] h-[2.917vw] bottom-[5vw] bg-[#4880FF] text-[0.938vw] text-[#FFFFFF] font-bold rounded-[12px]">Adicionar Agora</button>
-            </form>
-        </div>
+                        <button type="submit" className="absolute w-[75vw] lg:w-[40.625vw] h-[7vw] lg:h-[2.917vw] bottom-[5vw] bg-[#4880FF] md:text-[2vw] lg:text-[0.938vw] text-[#FFFFFF] font-bold rounded-[0.625vw]">Adicionar Agora</button>
+                        <button type="button" onClick={cancelar} className="absolute top-4 right-4 text-white font-bold text-lg">X</button>
+                    </form>
+                </div>
+            )}
+        </ContratarContactContext.Provider>
     )
 }
+
+export default ContratarContactProvider

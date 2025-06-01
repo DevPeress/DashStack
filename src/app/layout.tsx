@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { ContratarTeamProvider } from './team/contratar'
+import { ContratarContactProvider } from "./contact/contratar";
 
 export const metadata: Metadata = {
   title: "DashStack",
@@ -14,13 +16,17 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
   return (
     <html lang="en">
       <body className="overflow-hidden">
-        {children}
+        <ContratarTeamProvider>
+          <ContratarContactProvider>
+            {children}
 
-        <Toaster toastOptions={{
-          style: {
-            userSelect: "none"
-          }
-        }}/>
+            <Toaster toastOptions={{
+              style: {
+                userSelect: "none"
+              }
+            }}/>
+          </ContratarContactProvider>
+        </ContratarTeamProvider>
       </body>
     </html>
   );

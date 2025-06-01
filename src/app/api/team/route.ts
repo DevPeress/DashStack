@@ -21,7 +21,7 @@ export async function PUT(req: Request) {
     const { nome, sobrenome, email, celular, position, genero } = body;
 
     try {
-        const conta = prisma.usuario.findFirst({
+        const conta = await prisma.usuario.findFirst({
             where: { email: email }
         })
 
@@ -29,29 +29,30 @@ export async function PUT(req: Request) {
             return NextResponse.json({ mensagem: "Email não registrado no sistema." },{ status: 400 });
         }
 
-        const team = prisma.team.findFirst({
+        const team = await prisma.team.findFirst({
             where: { email: email }
         })
 
         if (!team) {
-            prisma.team.create({
+            await prisma.team.create({
                 data: {
                     nome: nome,
                     sobrenome: sobrenome,
                     email: email,
                     celular: celular,
                     position: position,
-                    genero: genero
+                    genero: genero,
+                    foto: '/User.svg'
                 }
             })
 
-            return NextResponse.json({ mensagem: "Email cadastrado!." },{ status: 201 });
+            return NextResponse.json({ mensagem: "Email cadastrado!.", status: 201 },{ status: 201 });
         } 
 
         return NextResponse.json({ mensagem: "Email já cadastrado na equipe!." },{ status: 400 });
     } catch (error) {
         console.error("[PUT Team]: ", error);
-        return NextResponse.json({ mensagem: "Erro interno ao atualizar o to-do." },{ status: 500 });
+        return NextResponse.json({ mensagem: "Erro interno ao atualizar o team." },{ status: 500 });
     } finally {
         await prisma.$disconnect();
     }
