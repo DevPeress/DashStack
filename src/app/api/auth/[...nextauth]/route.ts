@@ -1,4 +1,5 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
+import { NextRequest } from "next/server";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
@@ -50,7 +51,8 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// ⬅️ Aqui você exporta o handler e o authOptions
+
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST };
+export const GET = handler as (req: NextRequest) => ReturnType<typeof handler>;
+export const POST = handler as (req: NextRequest) => ReturnType<typeof handler>;
