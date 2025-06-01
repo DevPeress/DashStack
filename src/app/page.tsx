@@ -11,6 +11,7 @@ export default function Home() {
       <SideBar />
 
       <Pagina>
+        a
       </Pagina>
     </>
   );
