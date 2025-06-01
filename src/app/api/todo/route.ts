@@ -2,13 +2,11 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import { redirect } from "next/navigation";
 
 export async function GET() {
     const session = await getServerSession(authOptions);
 
-    if (!session) redirect("/login");
-
+    if (!session) return NextResponse.json({ mensagem: "Não autorizado." },{ status: 401 });
 
     const { id } = session.user as { id: string };
     
