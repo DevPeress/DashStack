@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"
 
-
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(4, "Senha deve ter no mínimo 4 caracteres"),
