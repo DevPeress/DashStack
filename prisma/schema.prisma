@@ -25,3 +25,14 @@ model Team {
   genero String
   foto String
 }
+
+model Contacts {
+  id    String      @id @default(cuid())
+  nome String
+  sobrenome String
+  email String
+  celular String
+  aniversario String
+  genero String
+  foto String
+}

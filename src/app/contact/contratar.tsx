@@ -22,7 +22,7 @@ const userSchema = z.object({
     email: z.string().email("Email inválido"),
     phone: z.string().min(8, "Telefone inválido"),
     gender: z.enum(["Male", "Female"], { message: "Selecione um gênero válido" }),
-    date: z.date(),
+    date: z.string(),
 })
 
 type UserSchema = z.infer<typeof userSchema>
