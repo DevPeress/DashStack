@@ -51,7 +51,7 @@ export function Contratar() {
     }
 
     return (
-        <div className="flex absolute w-[1540px] h-[744px] top-[5vw] bg-[#273142] rounded-[8px] items-center justify-center">
+        <div className="flex absolute w-[80.208vw] h-[38.75vw] top-[5vw] bg-[#273142] rounded-[0.417vw] items-center justify-center">
             <Image
                 className="absolute top-[5vw] select-none"
                 src={'/Photo.svg'}
@@ -60,7 +60,7 @@ export function Contratar() {
                 height={80}
                 priority
             />
-            <form onSubmit={handleSubmit(onSubmit)} className="w-[780px] grid grid-cols-2 gap-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-[40.625vw] grid grid-cols-2 gap-8">
                 <input
                     type="text"
                     placeholder="First Name"
@@ -101,7 +101,7 @@ export function Contratar() {
                     <option value="Female">Female</option>
                 </select>
 
-                <button type="submit" className="absolute w-[780px] h-[56px] bottom-[5vw] bg-[#4880FF] text-[18px] text-[#FFFFFF] font-bold rounded-[12px]">Adicionar Agora</button>
+                <button type="submit" className="absolute w-[40.625vw] h-[2.917vw] bottom-[5vw] bg-[#4880FF] text-[0.938vw] text-[#FFFFFF] font-bold rounded-[0.625vw]">Adicionar Agora</button>
             </form>
         </div>
     )
