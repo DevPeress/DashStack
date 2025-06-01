@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Dados } from "@/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -15,7 +16,7 @@ export async function GET() {
 
 export async function PUT(req: Request) {
     const body = await req.json();
-    const { nome, sobrenome, email, celular, date, genero } = body;
+    const { nome, sobrenome, email, celular, aniversario, genero } = body as Dados;
 
     try {
         const conta = await prisma.contacts.findFirst({
@@ -34,7 +35,7 @@ export async function PUT(req: Request) {
                         sobrenome: sobrenome,
                         email: email,
                         celular: celular,
-                        aniversario: date,
+                        aniversario: aniversario,
                         genero: genero,
                         foto: '/Image.svg'
                     }

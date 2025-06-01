@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { Register } from "@/types/types";
 
 export async function POST(req: Request) {
     const body = await req.json();
-    const { usuario, email, senha } = body;
+    const { usuario, email, senha } = body as Register;
 
     try {
         const conta = await prisma.usuario.findFirst({

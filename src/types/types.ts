@@ -22,3 +22,19 @@ export interface Numeros {
   index: number,
   idt: number
 }
+
+export interface Dados {
+  nome: string, 
+  sobrenome: string, 
+  email: string, 
+  celular: string, 
+  genero: string,
+  aniversario: string, 
+  position: string
+}
+
+export interface Register {
+  usuario: string,
+  email: string,
+  senha: string
+}

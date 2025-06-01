@@ -29,7 +29,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
     const body = await req.json();
-    const { idt, modo } = body;
+    const { idt, modo } = body as { idt: number, modo: string };
 
     const session = await getServerSession(authOptions);
 
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
     const body = await req.json();
-    const { texto } = body;
+    const { texto } = body as { texto: string };
 
     const session = await getServerSession(authOptions);
 
@@ -120,7 +120,7 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: Request) {
     const body = await req.json();
-    const { idt } = body;
+    const { idt } = body as { idt: number };
 
     const session = await getServerSession(authOptions);
 

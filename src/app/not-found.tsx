@@ -1,7 +1,6 @@
 import Image from "next/image" 
 
 export default function NotFound() {
-
     return (
         <div className="flex absolute w-full h-full items-center justify-center">
             <Image
