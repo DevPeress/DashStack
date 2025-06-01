@@ -156,8 +156,8 @@ export default function Home() {
       <Pagina>
         {acao ? 
           <>
-            <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF] select-none">Add New To-Do</h1>
-            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115 select-none" onClick={salvar}>Salvar</button>
+            <h1 className="absolute md:left-[2.7vw] lg:left-[2.7vw] md:top-[3vw] lg:top-[2vw] font-bold md:text-[3.2vw] lg:text-[1.667vw] text-[#FFFFFF] select-none">Add New To-Do</h1>
+            <button className="absolute md:right-[2.7vw] lg:right-[2.7vw] md:top-[3vw] lg:top-[2vw] md:w-[12vw] lg:w-[7.656vw] md:h-[4vw] lg:h-[2.5vw] bg-[#4379EE] font-bold md:text-[1.4vw] lg:text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115 select-none" onClick={salvar}>Salvar</button>
             <div className="flex absolute top-[6vw] w-[82vw] h-[4.844vw] bg-[#273142] border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center select-none">
               <input className="absolute w-[22.656vw] h-[2.083vw] p-5 left-[2vw] bg-[#323D4E] border-[0.031vw] border-[#CFCFCF] text-[0.833vw] text-[#FFFFFF] font-semibold rounded-[0.313vw] outline-0" value={texto} onChange={(e) => setTexto(e.target.value)} type="text" placeholder="Escreva aqui!" />
             </div>
@@ -166,18 +166,18 @@ export default function Home() {
           : 
           
           <>
-            <h1 className="absolute left-[2.7vw] top-[2vw] font-bold text-[1.667vw] text-[#FFFFFF] select-none">To-Do List</h1>
-            <button className="absolute right-[2.7vw] top-[2vw] w-[7.656vw] h-[2.5vw] bg-[#4379EE] font-bold text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115 select-none" onClick={salvar}>Add New Tesk</button>
+            <h1 className="absolute md:left-[2.7vw] lg:left-[2.7vw] md:top-[3vw] lg:top-[2vw] font-bold md:text-[3.2vw] lg:text-[1.667vw] text-[#FFFFFF] select-none">To-Do List</h1>
+            <button className="absolute md:right-[2.7vw] lg:right-[2.7vw] md:top-[3vw] lg:top-[2vw] md:w-[12vw] lg:w-[7.656vw] md:h-[4vw] lg:h-[2.5vw] bg-[#4379EE] font-bold md:text-[1.4vw] lg:text-[0.729vw] text-[#FFFFFF] rounded-[0.313vw] hover:scale-115 select-none" onClick={salvar}>Add New Tesk</button>
           </>
         }
 
-        <div className="flex absolute w-[82vw] max-h-[33vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap" style={{ top: acao ? "12vw" : "5vw"}}>
+        <div className="flex absolute md:w-[82vw] lg:w-[82vw] md:max-h-[38vw] lg:max-h-[33vw] top-[12vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap">
           {typeof lista === "object" && lista.length > 0 && lista.map((item, index) => {
             const verify = item.verify
 
             return (
-              <div key={index} className="flex relative w-full min-h-[4.844vw] h-auto border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center overflow-hidden mb-[.75vw]" style={{ background: verify ? '#4880FF' : '#273142' }}> 
-                <div className="flex absolute left-[2vw] w-[1.563vw] h-[1.563vw] border-[0.104vw] rounded items-center justify-center" onClick={() => alterarCheck(index, item.id)} style={{ background: verify ? '' : '#323D50', borderColor: verify ? '#FFFFFF' : '#313D4F' }}>
+              <div key={index} className="flex relative w-full md:min-h-[5.5vw] lg:min-h-[4.844vw] h-auto border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center overflow-hidden mb-[.75vw]" style={{ background: verify ? '#4880FF' : '#273142' }}> 
+                <div className="flex absolute md:left-[2vw] lg:left-[2vw] md:w-[1.563vw] lg:w-[1.563vw] md:h-[1.562vw] lg:h-[1.563vw] border-[0.104vw] rounded items-center justify-center" onClick={() => alterarCheck(index, item.id)} style={{ background: verify ? '' : '#323D50', borderColor: verify ? '#FFFFFF' : '#313D4F' }}>
                   {verify ? 
                     <>
                       <Image
@@ -192,14 +192,14 @@ export default function Home() {
                   }
                 </div>
                 <div className="flex relative w-[65vw] h-auto left-[-2vw]">
-                  <h1 className="flex relative w-full h-auto text-[#FFFFFF] text-[0.833vw] font-semibold mt-[.5vw] mb-[.5vw]">{item.texto}</h1>
+                  <h1 className="flex relative w-full h-auto text-[#FFFFFF] md:text-[1.6vw] lg:text-[0.833vw] font-semibold mt-[.5vw] mb-[.5vw]">{item.texto}</h1>
                 </div>
 
-                <div className="flex absolute w-[4vw] right-[5vw] items-center justify-between">
+                <div className="flex absolute md:w-[8vw] lg:w-[5vw] right-[5vw] items-center justify-between">
                   {verify ? 
                     <> 
                       <Image
-                        className="select-none hover:scale-110"
+                        className="md:w-[6vw] lg:w-[4vw] select-none hover:scale-110"
                         src={'/Lixeira.svg'}
                         alt="Estrela do To-DO"
                         width={65}
@@ -211,7 +211,7 @@ export default function Home() {
                     : 
                     <>
                       <Image
-                        className="select-none hover:scale-110"
+                        className="md:w-[3vw] lg:w-[2vw] select-none hover:scale-110"
                         src={item.fav ? '/Star-F.svg' : '/Star.svg'}
                         alt="Estrela do To-DO"
                         width={26}
@@ -221,7 +221,7 @@ export default function Home() {
                       />
 
                       <Image
-                        className="select-none hover:scale-110"
+                        className="md:w-[3vw] lg:w-[2vw] select-none hover:scale-110"
                         src="/Delete Todo.svg"
                         alt="Delete do To-DO"
                         width={30}
