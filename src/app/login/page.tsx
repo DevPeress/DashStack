@@ -18,11 +18,25 @@ export default function Home() {
     resolver: zodResolver(loginSchema),
   })
 
-  const onSubmit = (data: LoginSchema) => {
-    console.log(data)
+  const onSubmit = async (data: LoginSchema) => {
+    const verify = fetch('api/login', {
+      method: "POST",
+      body: JSON.stringify({ 
+        email: data.email,
+        senha: data.password
+      }),
+    })
 
-    // API
-    return toast.error("Email ou Senha estão incorretos!")
+    await toast.promise(
+      verify.then(res => {
+        if (!res) throw new Error();
+      }),
+      {
+        loading: 'Realizando o login...',
+        success: <b>Login efetuado com sucesso!!</b>,
+        error: <b>Email ou senha estão incorretos!</b>,
+      }
+    );
   }
 
   return (

@@ -19,9 +19,26 @@ export default function Home() {
     resolver: zodResolver(userSchema)
   })
 
-  const onSubmit = (data: UserSchema) => {
-    console.log(data)
-    toast.success("Conta criada com sucesso!")
+  const onSubmit = async (data: UserSchema) => {
+    const verify = fetch('api/register', {
+      method: "POST",
+      body: JSON.stringify({ 
+        usuario: data.username,
+        email: data.email,
+        senha: data.password
+      }),
+    })
+
+    await toast.promise(
+      verify.then(res => {
+        if (!res) throw new Error();
+      }),
+      {
+        loading: 'Realizando o cadastro...',
+        success: <b>Conta criada com sucesso!</b>,
+        error: <b>Problema ao efetuar o cadastro, contate um administrador!</b>,
+      }
+    );
   }
 
   return (
