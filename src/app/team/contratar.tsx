@@ -87,6 +87,12 @@ export const ContratarTeamProvider = ({ children }: ContratarTeamProviderProps) 
         setResolveCallback(null);
     };
 
+    function formatNumero(value: string) {
+        const numericValue = value.replace(/\D/g, "");
+
+        return numericValue.replace(/(\d{1})(\d)/, "($1$2) ").replace(/(\d{5})(\d)/, "$1-$2")
+    }
+
     return (
         <ContratarTeamContext.Provider value={{ message, showConfirm }}>
             {children}
@@ -123,7 +129,12 @@ export const ContratarTeamProvider = ({ children }: ContratarTeamProviderProps) 
                             type="text"
                             placeholder="Phone Number"
                             className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.phone ? "border-pink-500" : "border-white"}`}
+                            maxLength={15}
                             {...register("phone")}
+                            onChange={(e) => {
+                                const formatted = formatNumero(e.target.value);
+                                e.target.value = formatted;
+                            }}
                         />
                         <input
                             type="text"
