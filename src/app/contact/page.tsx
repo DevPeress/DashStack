@@ -7,16 +7,11 @@ import { useContext, useEffect, useState } from "react";
 import { ContratarContactContext } from "./contratar";
 
 import Image from "next/image" 
-
-interface Contatos {
-  foto: string,
-  nome: string,
-  email: string
-}
+import { Pessoas } from "@/types/types";
 
 export default function Home() {
   const { showConfirm } = useContext(ContratarContactContext)!
-  const [contatos,setContatos] = useState<Contatos[]>([])
+  const [contatos,setContatos] = useState<Pessoas[]>([])
   
   const alterarTipo = async () => {
     const resultado = await showConfirm("Adicionar novo membro?")

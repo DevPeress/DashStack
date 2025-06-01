@@ -7,17 +7,11 @@ import { useEffect, useState } from "react";
 
 import Image from "next/image" 
 import toast from "react-hot-toast";
-
-interface Lista {
-  verify: boolean,
-  fav: boolean,
-  texto: string,
-  id: number
-}
+import { Todo } from "@/types/types";
 
 export default function Home() {
   const [texto,setTexto] = useState<string>("")
-  const [lista,setLista] = useState<Lista[]>([])
+  const [lista,setLista] = useState<Todo[]>([])
   const [acao,setAcao] = useState<boolean>(false)
 
   const alterarFav = async (index: number, idt: number) => {

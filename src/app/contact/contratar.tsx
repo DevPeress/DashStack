@@ -1,19 +1,16 @@
 'use client'
 
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState } from "react";
 import Image from "next/image"
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import { ProviderProps } from "@/types/types";
 
 interface ContratarContactContextProps {
     message: string;
     showConfirm: (msg: string) => Promise<UserSchema | null>;
-}
-
-interface ContratarContactProviderProps {
-    children: ReactNode;
 }
 
 const userSchema = z.object({
@@ -29,7 +26,7 @@ type UserSchema = z.infer<typeof userSchema>
 
 export const ContratarContactContext = createContext<ContratarContactContextProps | undefined>(undefined);
 
-export const ContratarContactProvider = ({ children }: ContratarContactProviderProps) => {
+export const ContratarContactProvider = ({ children }: ProviderProps) => {
     const [message, setMessage] = useState<string>("");
     const [resolveCallback, setResolveCallback] = useState<((data: UserSchema | null) => void) | null>(null);
 

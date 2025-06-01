@@ -7,18 +7,12 @@ import { SideBar } from "@/components/sidebar";
 import Image from "next/image" 
 import { useContext, useEffect, useState } from "react";
 import { ContratarTeamContext } from "./contratar";
-
-interface Team {
-  nome: string,
-  position: string,
-  email: string,
-  foto: string
-}
+import { Pessoas } from "@/types/types";
 
 export default function Home() {
   const { showConfirm } = useContext(ContratarTeamContext)!
 
-  const [funcionarios,setFuncionarios] = useState<Team[]>([])
+  const [funcionarios,setFuncionarios] = useState<Pessoas[]>([])
 
   const alterarTipo = async () => {
     const resultado = await showConfirm("Adicionar novo membro?")
