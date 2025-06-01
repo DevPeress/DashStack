@@ -30,13 +30,16 @@ export default function Home() {
     })
 
     await toast.promise(
-      verify.then(res => {
-        if (!res) throw new Error();
-      }),
+      verify.then(res => res.json())
+      .then(dados => {
+        if (dados.status !== 201) {
+          throw new Error(dados.mensagem)
+        }
+      }), 
       {
         loading: 'Realizando o cadastro...',
         success: <b>Conta criada com sucesso!</b>,
-        error: <b>Problema ao efetuar o cadastro, contate um administrador!</b>,
+        error: (err) => <b>{err.message}</b>,
       }
     );
   }
