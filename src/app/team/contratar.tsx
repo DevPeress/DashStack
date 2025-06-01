@@ -12,7 +12,7 @@ const userSchema = z.object({
     email: z.string().email("Email inválido"),
     phone: z.string().min(8, "Telefone inválido"),
     gender: z.enum(["Male", "Female"], { message: "Selecione um gênero válido" }),
-    date: z.date(),
+    position: z.string(),
 })
 
 type UserSchema = z.infer<typeof userSchema>
@@ -22,9 +22,32 @@ export function Contratar() {
         resolver: zodResolver(userSchema)
     })
 
-    const onSubmit = (data: UserSchema) => {
-        console.log(data)
-        toast.success("Conta criada com sucesso!")
+    const onSubmit = async (data: UserSchema) => {
+        const verify = fetch('api/team', {
+            method: "PUT",
+            body: JSON.stringify({ 
+                nome: data.first,
+                sobrenome: data.last,
+                email: data.email,
+                celular: data.phone,
+                position: data.position,
+                genero: data.gender
+            }),
+            })
+
+            await toast.promise(
+            verify.then(res => res.json())
+            .then(dados => {
+                if (dados.status !== 201) {
+                throw new Error(dados.mensagem)
+                }
+            }), 
+            {
+                loading: 'Realizando o cadastro...',
+                success: <b>Cadastro realizado com sucesso!!</b>,
+                error: (err) => <b>{err.message}</b>,
+            }
+        );
     }
 
     return (
@@ -67,10 +90,10 @@ export function Contratar() {
                 />
 
                 <input
-                    type="date"
-                    placeholder="Date of Birth"
-                    className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.date ? "border-pink-500" : "border-white"}`}
-                    {...register("date")}
+                    type="text"
+                    placeholder="Position"
+                    className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.position ? "border-pink-500" : "border-white"}`}
+                    {...register("position")}
                 />
 
                 <select className={`p-5 rounded-md outline-none text-[#B6B6B6] bg-[#323D4E] border-2 ${errors.gender ? "border-pink-500" : "border-white"}`} {...register("gender")}>

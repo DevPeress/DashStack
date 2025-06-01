@@ -14,3 +14,14 @@ model Usuario {
   password String
   todo Json
 }
+
+model Team {
+  id    Int    @id @default(autoincrement())
+  nome String
+  sobrenome String
+  email String
+  celular String
+  position String
+  genero String
+  foto String
+}
