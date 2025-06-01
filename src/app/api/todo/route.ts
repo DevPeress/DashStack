@@ -17,10 +17,10 @@ export async function GET() {
         })
 
         if (!conta) {
-            return NextResponse.json({ status: 400, mensagem: "Conta não encontrada!" })
+            return NextResponse.json({ status: 400, mensagem: "Conta não encontrada!" }, { status: 400})
         }
 
-        return NextResponse.json({ status: 200, mensagem: conta.todo })
+        return NextResponse.json({ status: 200, mensagem: conta.todo }, { status: 200 })
     } catch(error) {
         console.error("[GET To-Do]: ", error)
     } finally {

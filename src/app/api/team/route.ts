@@ -8,7 +8,7 @@ export async function GET() {
         return NextResponse.json({ mensagem: team, status: 404 }, { status: 404 });
     } catch (error) {
         console.error("[GET Team]: ", error);
-        return NextResponse.json({ mensagem: "Erro interno ao atualizar o team.", status: 404 },{ status: 500 });
+        return NextResponse.json({ mensagem: "Erro interno ao atualizar o team.", status: 500 },{ status: 500 });
     } finally {
         await prisma.$disconnect();
     }

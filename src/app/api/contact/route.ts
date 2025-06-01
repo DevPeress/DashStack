@@ -5,10 +5,10 @@ export async function GET() {
     try {
         const contatos = await prisma.contacts.findMany()
 
-        return NextResponse.json({ mensagem: contatos, status: 404 }, { status: 404 });
+        return NextResponse.json({ mensagem: contatos, status: 200 }, { status: 200 });
     } catch (error) {
         console.error("[GET Contatos]: ", error);
-        return NextResponse.json({ mensagem: "Erro interno ao atualizar o team.", status: 404 },{ status: 500 });
+        return NextResponse.json({ mensagem: "Erro interno ao atualizar o team.", status: 404 },{ status: 404 });
     } finally {
         await prisma.$disconnect();
     }
