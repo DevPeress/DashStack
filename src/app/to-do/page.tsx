@@ -3,7 +3,7 @@
 import { Header } from "@/components/header";
 import { Pagina } from "@/components/pagina";
 import { SideBar } from "@/components/sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Image from "next/image" 
 import toast from "react-hot-toast";
@@ -11,20 +11,35 @@ import toast from "react-hot-toast";
 interface Lista {
   verify: boolean,
   fav: boolean,
-  texto: string
+  texto: string,
+  id: number
 }
 
 export default function Home() {
   const [texto,setTexto] = useState<string>("")
-  const [lista,setLista] = useState<Lista[]>([
-    { verify: false, fav: false, texto: "Teste" },
-    { verify: false, fav: false, texto: "Teste 2" },
-  ])
+  const [lista,setLista] = useState<Lista[]>([])
   const [acao,setAcao] = useState<boolean>(false)
 
-  const alterarFav = (index: number) => {
+  const alterarFav = async (index: number, id: number) => {
     const isFav = lista[index].fav;
-    toast.success(isFav ? "Retirado dos favoritos" : "Adicionado aos favoritos");
+    const verify = fetch('api/todo', {
+      method: "POST",
+      body: JSON.stringify({ 
+        id,
+        modo: "Fav"
+      }),
+    })
+      
+    await toast.promise(
+      verify.then(res => {
+        if (!res) throw new Error();
+      }),
+      {
+        loading: 'Efetuando a troca...',
+        success: <b>{isFav ? "Retirado dos favoritos" : "Adicionado aos favoritos"}</b>,
+        error: <b>Problema ao efetuar a troca</b>,
+      }
+    );
 
     setLista((prevDados) =>
       prevDados.map((item, i) =>
@@ -33,9 +48,26 @@ export default function Home() {
     );
   };
 
-   const alterarCheck = (index: number) => {
-    const isFav = lista[index].verify;
-    toast.success(isFav ? "Retirada a verificação!" : "Adicionado aos verificados");
+   const alterarCheck = async (index: number, id: number) => {
+    const isVerify = lista[index].verify;
+    const verify = fetch('api/todo', {
+      method: "POST",
+      body: JSON.stringify({ 
+        id,
+        modo: "Verify"
+      }),
+    })
+      
+    await toast.promise(
+      verify.then(res => {
+        if (!res) throw new Error();
+      }),
+      {
+        loading: 'Efetuando a troca...',
+        success: <b>{isVerify ? "Retirado dos favoritos" : "Adicionado aos favoritos"}</b>,
+        error: <b>Problema ao efetuar a troca</b>,
+      }
+    );
     
     setLista((prevDados) =>
       prevDados.map((item, i) =>
@@ -44,27 +76,77 @@ export default function Home() {
     );
   };
 
-  const apagar = (index: number) => {
-    setLista((prevDados) => prevDados.filter((_, i) => i !== index));
-    return toast.success("A fazer apagado!");
+  const apagar = async (index: number, id: number) => {
+    const verify = fetch('api/todo', {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    })
+      
+    await toast.promise(
+      verify.then(res => {
+        if (!res) throw new Error();
+      }),
+      {
+        loading: 'Adicionando...',
+        success: <b>Tarefa Adicionada!</b>,
+        error: <b>Problema ao adicionar tarefa!</b>,
+      }
+    );
+    
+    return setLista((prevDados) => prevDados.filter((_, i) => i !== index));
   };
 
-  const salvar = () => {
+  const salvar = async () => {
     if (acao) {
       if (texto.length < 1) {
         return toast.error("Precisa conter algum a fazer!!")
       }
+
+      let id: number = 0
+      const verify = fetch('api/todo', {
+        method: "PUT",
+        body: JSON.stringify({ texto }),
+      })
+      
+
+      await toast.promise(
+        verify.then(res => res.json())
+        .then(data => {
+          if (!data.id) throw new Error();
+          id = data.id
+        }),
+        {
+          loading: 'Adicionando...',
+          success: <b>Tarefa Adicionada!</b>,
+          error: <b>Problema ao adicionar tarefa!</b>,
+        }
+      );
+
       setLista((prevDados) => [
         ...prevDados,
-        { verify:false, fav: false, texto: texto }
+        { id: id,verify:false, fav: false, texto: texto }
       ])
+
       setTexto("")
-      setAcao(false)
-      return toast.success("Novo a fazer adicionado na lista!")
+      return setAcao(false)
     } else {
       setAcao(true)
     }
   }
+
+  useEffect(() => {
+    fetch('api/todo')
+    .then(res => res.json())
+    .then(dados => {
+      console.log(dados.mensagem.length)
+      if (dados.mensagem.length > 0) {
+        setLista(dados.mensagem)
+      }
+    })
+    .catch(dados => {
+      toast.error(dados.mensagem)
+    })
+  },[])
 
   return (
     <>
@@ -90,12 +172,12 @@ export default function Home() {
         }
 
         <div className="flex absolute w-[82vw] max-h-[33vw] h-auto items-center justify-center overflow-x-hidden overflow-y-auto flex-wrap" style={{ top: acao ? "12vw" : "5vw"}}>
-          {lista.map((item, index) => {
+          {typeof lista === "object" && lista.length > 0 && lista.map((item, index) => {
             const verify = item.verify
 
             return (
               <div key={index} className="flex relative w-full min-h-[4.844vw] h-auto border-[0.063vw] border-[#313D4F] rounded-[0.625vw] items-center justify-center overflow-hidden mb-[.75vw]" style={{ background: verify ? '#4880FF' : '#273142' }}> 
-                <div className="flex absolute left-[2vw] w-[1.563vw] h-[1.563vw] border-[0.104vw] rounded items-center justify-center" onClick={() => alterarCheck(index)} style={{ background: verify ? '' : '#323D50', borderColor: verify ? '#FFFFFF' : '#313D4F' }}>
+                <div className="flex absolute left-[2vw] w-[1.563vw] h-[1.563vw] border-[0.104vw] rounded items-center justify-center" onClick={() => alterarCheck(index, item.id)} style={{ background: verify ? '' : '#323D50', borderColor: verify ? '#FFFFFF' : '#313D4F' }}>
                   {verify ? 
                     <>
                       <Image
@@ -123,7 +205,7 @@ export default function Home() {
                         width={65}
                         height={40}
                         priority
-                        onClick={() => apagar(index)}
+                        onClick={() => apagar(index, item.id)}
                       />
                     </>
                     : 
@@ -135,7 +217,7 @@ export default function Home() {
                         width={26}
                         height={26}
                         priority
-                        onClick={() => alterarFav(index)}
+                        onClick={() => alterarFav(index, item.id)}
                       />
 
                       <Image
@@ -145,7 +227,7 @@ export default function Home() {
                         width={30}
                         height={30}
                         priority
-                        onClick={() => apagar(index)}
+                        onClick={() => apagar(index, item.id)}
                       />
                     </>
                   }
