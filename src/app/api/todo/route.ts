@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     const session = await getServerSession(authOptions);
 
-    if (!session) return { redirect: "/login" };
+     if (!session) return NextResponse.json({ mensagem: "Não autorizado." },{ status: 401 });
 
     const { id } = session.user as { id: string };
 
@@ -83,7 +83,7 @@ export async function PUT(req: Request) {
 
     const session = await getServerSession(authOptions);
 
-    if (!session) return { redirect: "/login" };
+     if (!session) return NextResponse.json({ mensagem: "Não autorizado." },{ status: 401 });
 
     const { id } = session.user as { id: string };
 
@@ -126,7 +126,7 @@ export async function DELETE(req: Request) {
 
     const session = await getServerSession(authOptions);
 
-    if (!session) return { redirect: "/login" };
+     if (!session) return NextResponse.json({ mensagem: "Não autorizado." },{ status: 401 });
 
     const { id } = session.user as { id: string };
 
