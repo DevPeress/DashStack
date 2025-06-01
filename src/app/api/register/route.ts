@@ -18,7 +18,12 @@ export async function POST(req: Request) {
         }
 
         const senhaProtegida = await Senhas("criptografar", senha)
+
         if (senhaProtegida) {
+            if (typeof senhaProtegida !== "string") {
+                return new NextResponse("Erro ao gerar senha", { status: 500 });
+            }
+            
             prisma.usuario.create({
                 data: {
                     usuario: usuario,
