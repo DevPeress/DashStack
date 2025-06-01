@@ -6,6 +6,7 @@ import toast from "react-hot-toast"
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link';
+import { useRouter } from "next/navigation"
 
 const userSchema = z.object({
   username: z.string().min(1, "Usuário é obrigatório"),
@@ -16,6 +17,7 @@ const userSchema = z.object({
 type UserSchema = z.infer<typeof userSchema>
 
 export default function Home() {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<UserSchema>({
     resolver: zodResolver(userSchema)
   })
@@ -35,6 +37,8 @@ export default function Home() {
       .then(dados => {
         if (dados.status !== 201) {
           throw new Error(dados.mensagem)
+        } else {
+          router.push("/");
         }
       }), 
       {
