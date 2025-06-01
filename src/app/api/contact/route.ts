@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
     try {
         const contatos = await prisma.contacts.findMany()
-
         return NextResponse.json({ mensagem: contatos, status: 200 }, { status: 200 });
     } catch (error) {
         console.error("[GET Contatos]: ", error);

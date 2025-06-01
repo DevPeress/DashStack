@@ -18,12 +18,7 @@ export async function POST(req: Request) {
         const inicio = await bcrypt.genSalt(10)
         const senhaProtegida = await bcrypt.hash(senha, inicio) 
 
-        if (senhaProtegida) {
-            if (typeof senhaProtegida !== "string") {
-                console.error("Erro ao criptografar a senha")
-                return NextResponse.json({ mensagem: "Erro ao criar, fale com o administrador!", status: 500 }, { status: 500 });
-            }
-
+        if (senhaProtegida && typeof senhaProtegida === "string") {
             await prisma.usuario.create({
                 data: {
                     usuario: usuario,

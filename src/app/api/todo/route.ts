@@ -97,10 +97,8 @@ export async function PUT(req: Request) {
         }
 
         const todo = (Array.isArray(conta.todo) ? conta.todo : []) as { id: number, texto: string, verify: boolean, fav: boolean }[];
-
         const ultimoId = todo.length > 0 && typeof todo[todo.length - 1].id === "number" ? todo[todo.length - 1].id : 0;
         const novoId = ultimoId + 1;
-
         const novoTodo = [
             ...todo,
             { id: novoId, verify: false, fav: false, texto },
@@ -143,10 +141,8 @@ export async function DELETE(req: Request) {
             return NextResponse.json({ mensagem: "Conta não encontrada!" }, { status: 404 });
         }
 
-       const todo = (Array.isArray(conta.todo) ? conta.todo : []) as { id: number, texto: string, verify: boolean, fav: boolean }[];
-
+        const todo = (Array.isArray(conta.todo) ? conta.todo : []) as { id: number, texto: string, verify: boolean, fav: boolean }[];
         const novoTodo = todo.filter((item) => item.id !== idt);
-
         const updated = await prisma.usuario.update({
             where: { id: id },
             data: { todo: novoTodo }
