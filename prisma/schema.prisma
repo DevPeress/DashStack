@@ -8,15 +8,15 @@ datasource db {
 }
 
 model Usuario {
-  id    Int    @id @default(autoincrement())
+  id    String      @id @default(cuid())
   usuario String
-  email String
+  email String @unique
   password String
   todo Json
 }
 
 model Team {
-  id    Int    @id @default(autoincrement())
+  id    String      @id @default(cuid())
   nome String
   sobrenome String
   email String

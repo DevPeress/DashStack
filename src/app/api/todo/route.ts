@@ -1,12 +1,19 @@
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client';
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
-const prisma = new PrismaClient();
 
 export async function GET() {
+    const session = await getServerSession(authOptions);
+
+    if (!session) return { redirect: "/login" };
+
+    const { id } = session.user as { id: string };
+    
     try {
         const conta = await prisma.usuario.findUnique({
-            where: { id: 1 }
+            where: { id: id }
         })
 
         if (!conta) {
@@ -23,11 +30,17 @@ export async function GET() {
 
 export async function POST(req: Request) {
     const body = await req.json();
-    const { id, modo } = body;
+    const { idt, modo } = body;
+
+    const session = await getServerSession(authOptions);
+
+    if (!session) return { redirect: "/login" };
+
+    const { id } = session.user as { id: string };
 
     try {
         const conta = await prisma.usuario.findUnique({
-            where: { id: 1 },
+            where: { id: id },
         });
 
         if (!conta) {
@@ -37,19 +50,19 @@ export async function POST(req: Request) {
         const todo = (Array.isArray(conta.todo) ? conta.todo : []) as { id: number, texto: string, verify: boolean, fav: boolean }[];
 
         if (modo === "Fav") {
-            const novoTodo = todo.map((item) => item.id === id ? { ...item, fav: !item.fav } : item )
+            const novoTodo = todo.map((item) => item.id === idt ? { ...item, fav: !item.fav } : item )
 
             const updated = await prisma.usuario.update({
-                where: { id: 1 },
+                where: { id: id },
                 data: { todo: novoTodo },
             });
 
             return NextResponse.json({mensagem: "To-do atualizado com sucesso!",updated },{ status: 200 });
         } else if (modo === "Verify") {
-            const novoTodo = todo.map((item) => item.id === id ? { ...item, verify: !item.verify } : item )
+            const novoTodo = todo.map((item) => item.id === idt ? { ...item, verify: !item.verify } : item )
 
             const updated = await prisma.usuario.update({
-                where: { id: 1 },
+                where: { id: id },
                 data: { todo: novoTodo },
             });
 
@@ -59,65 +72,64 @@ export async function POST(req: Request) {
         return NextResponse.json({ mensagem: "Conta não encontrada!" }, { status: 404 });
     } catch (error) {
         console.error("[POST To-Do]: ", error);
-        return NextResponse.json(
-        { mensagem: "Erro interno ao atualizar o to-do." },
-        { status: 500 }
-        );
+        return NextResponse.json({ mensagem: "Erro interno ao atualizar o to-do." },{ status: 500 });
     } finally {
         await prisma.$disconnect();
     }
 }
 
 export async function PUT(req: Request) {
-  const body = await req.json();
-  const { texto } = body;
+    const body = await req.json();
+    const { texto } = body;
 
-  try {
-    const conta = await prisma.usuario.findUnique({
-      where: { id: 1 },
-    });
+    const session = await getServerSession(authOptions);
 
-    if (!conta) {
-      return NextResponse.json({ mensagem: "Conta não encontrada!" }, { status: 404 });
+    if (!session) return { redirect: "/login" };
+
+    const { id } = session.user as { id: string };
+
+    try {
+        const conta = await prisma.usuario.findUnique({
+            where: { id: id },
+        });
+
+        if (!conta) {
+            return NextResponse.json({ mensagem: "Conta não encontrada!" }, { status: 404 });
+        }
+
+        const todo = (Array.isArray(conta.todo) ? conta.todo : []) as { id: number, texto: string, verify: boolean, fav: boolean }[];
+
+        const ultimoId = todo.length > 0 && typeof todo[todo.length - 1].id === "number" ? todo[todo.length - 1].id : 0;
+        const novoId = ultimoId + 1;
+
+        const novoTodo = [
+            ...todo,
+            { id: novoId, verify: false, fav: false, texto },
+        ];
+
+        const updated = await prisma.usuario.update({
+            where: { id: id },
+            data: { todo: novoTodo },
+        });
+
+        return NextResponse.json({mensagem: "To-do atualizado com sucesso!",updated,id: novoId,},{ status: 200 });
+    } catch (error) {
+        console.error("[PUT To-Do]: ", error);
+        return NextResponse.json({ mensagem: "Erro interno ao atualizar o to-do." },{ status: 500 });
+    } finally {
+        await prisma.$disconnect();
     }
-
-    const todo = (Array.isArray(conta.todo) ? conta.todo : []) as { id: number, texto: string, verify: boolean, fav: boolean }[];
-
-    const ultimoId = todo.length > 0 && typeof todo[todo.length - 1].id === "number" ? todo[todo.length - 1].id : 0;
-    const novoId = ultimoId + 1;
-
-    const novoTodo = [
-      ...todo,
-      { id: novoId, verify: false, fav: false, texto },
-    ];
-
-    const updated = await prisma.usuario.update({
-      where: { id: 1 },
-      data: { todo: novoTodo },
-    });
-
-    return NextResponse.json(
-      {
-        mensagem: "To-do atualizado com sucesso!",
-        updated,
-        id: novoId,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("[PUT To-Do]: ", error);
-    return NextResponse.json(
-      { mensagem: "Erro interno ao atualizar o to-do." },
-      { status: 500 }
-    );
-  } finally {
-    await prisma.$disconnect();
-  }
 }
 
 export async function DELETE(req: Request) {
     const body = await req.json();
-    const { id } = body;
+    const { idt } = body;
+
+    const session = await getServerSession(authOptions);
+
+    if (!session) return { redirect: "/login" };
+
+    const { id } = session.user as { id: string };
 
     try {
         if (typeof id !== "number") {
@@ -125,7 +137,7 @@ export async function DELETE(req: Request) {
         }
 
         const conta = await prisma.usuario.findUnique({
-            where: { id: 1 }
+            where: { id: id }
         })
 
         if (!conta) {
@@ -134,14 +146,14 @@ export async function DELETE(req: Request) {
 
        const todo = (Array.isArray(conta.todo) ? conta.todo : []) as { id: number, texto: string, verify: boolean, fav: boolean }[];
 
-        const novoTodo = todo.filter((item) => item.id !== id);
+        const novoTodo = todo.filter((item) => item.id !== idt);
 
         const updated = await prisma.usuario.update({
-            where: { id: 1 },
+            where: { id: id },
             data: { todo: novoTodo }
         });
 
-        return NextResponse.json({ mensagem: "To-do atualizado com sucesso!", updated, id },{ status: 200 });
+        return NextResponse.json({ mensagem: "To-do atualizado com sucesso!", updated, idt },{ status: 200 });
     } catch(error) {
         console.error("[PUT To-Do]: ", error)
         return NextResponse.json({ mensagem: "Erro interno ao atualizar o to-do." },{ status: 500 });

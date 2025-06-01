@@ -6,6 +6,9 @@ import toast from "react-hot-toast"
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link';
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation"
+
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -15,27 +18,20 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>
 
 export default function Home() {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   })
 
   const onSubmit = async (data: LoginSchema) => {
-    const verify = fetch(`api/login?email=${data.email}&senha=${data.password}`)
+    const res = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
 
-    await toast.promise(
-      verify.then(res => res.json())
-      .then(dados => {
-        console.log(dados.status)
-        if (dados.status !== 201) {
-          throw new Error(dados.mensagem)
-        }
-      }), 
-      {
-        loading: 'Realizando o login...',
-        success: <b>Login efetuado com sucesso!</b>,
-        error: (err) => <b>{err.message}</b>,
-      }
-    );
+    if (res?.ok) router.push("/");
+    else toast.error("Email ou senha estão errados!");
   }
 
   return (

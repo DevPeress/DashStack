@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client';
-import { Senhas } from "../senhas";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
     const body = await req.json();
@@ -17,7 +15,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ mensagem: "Email já possui conta!", status: 404 }, { status: 404 });
         }
 
-        const senhaProtegida = await Senhas("criptografar", senha)
+        const inicio = await bcrypt.genSalt(10)
+        const senhaProtegida = await bcrypt.hash(senha, inicio) 
 
         if (senhaProtegida) {
             if (typeof senhaProtegida !== "string") {

@@ -20,12 +20,12 @@ export default function Home() {
   const [lista,setLista] = useState<Lista[]>([])
   const [acao,setAcao] = useState<boolean>(false)
 
-  const alterarFav = async (index: number, id: number) => {
+  const alterarFav = async (index: number, idt: number) => {
     const isFav = lista[index].fav;
     const verify = fetch('api/todo', {
       method: "POST",
       body: JSON.stringify({ 
-        id,
+        idt,
         modo: "Fav"
       }),
     })
@@ -76,10 +76,10 @@ export default function Home() {
     );
   };
 
-  const apagar = async (index: number, id: number) => {
+  const apagar = async (index: number, idt: number) => {
     const verify = fetch('api/todo', {
       method: "DELETE",
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ idt }),
     })
       
     await toast.promise(
