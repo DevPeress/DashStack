@@ -6,11 +6,11 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
-import { ProviderProps } from "@/types/types";
+import { Pessoas, ProviderProps } from "@/types/types";
 
 interface ContratarTeamContextProps {
-    message: string;
-    showConfirm: (msg: string) => Promise<UserSchema | null>;
+    message: Pessoas['nome'];
+    showConfirm: (msg: Pessoas['nome']) => Promise<UserSchema | null>;
 }
 
 const userSchema = z.object({
@@ -27,7 +27,7 @@ type UserSchema = z.infer<typeof userSchema>
 export const ContratarTeamContext = createContext<ContratarTeamContextProps | undefined>(undefined);
 
 export const ContratarTeamProvider = ({ children }: ProviderProps) => {
-    const [message, setMessage] = useState<string>("");
+    const [message, setMessage] = useState<Pessoas['nome']>("");
     const [resolveCallback, setResolveCallback] = useState<((data: UserSchema | null) => void) | null>(null);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<UserSchema>({
@@ -64,10 +64,10 @@ export const ContratarTeamProvider = ({ children }: ProviderProps) => {
 
         if (resolveCallback) resolveCallback(data);
         cleanup();
-        reset(); // Limpa o formulário após envio
+        reset();
     }
 
-    const showConfirm = (msg: string): Promise<UserSchema | null> => {
+    const showConfirm = (msg: Pessoas['nome']): Promise<UserSchema | null> => {
         setMessage(msg)
         return new Promise((resolve) => {
             setResolveCallback(() => resolve);
@@ -84,7 +84,7 @@ export const ContratarTeamProvider = ({ children }: ProviderProps) => {
         setResolveCallback(null);
     };
 
-    function formatNumero(value: string) {
+    function formatNumero(value: Pessoas['nome']) {
         const numericValue = value.replace(/\D/g, "");
 
         return numericValue.replace(/(\d{1})(\d)/, "($1$2) ").replace(/(\d{5})(\d)/, "$1-$2")

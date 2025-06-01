@@ -15,5 +15,10 @@ export interface Pessoas {
 }
 
 export interface ProviderProps {
-    children: ReactNode;
+  children: ReactNode;
+}
+
+export interface Numeros {
+  index: number,
+  idt: number
 }

@@ -10,11 +10,11 @@ import toast from "react-hot-toast";
 import { Todo } from "@/types/types";
 
 export default function Home() {
-  const [texto,setTexto] = useState<string>("")
+  const [texto,setTexto] = useState<Todo['texto']>("")
   const [lista,setLista] = useState<Todo[]>([])
-  const [acao,setAcao] = useState<boolean>(false)
+  const [acao,setAcao] = useState<Todo['fav']>(false)
 
-  const alterarFav = async (index: number, idt: number) => {
+  const alterarFav = async (index: Todo['id'], idt: Todo['id']) => {
     const isFav = lista[index].fav;
     const verify = fetch('api/todo', {
       method: "POST",
@@ -42,7 +42,7 @@ export default function Home() {
     );
   };
 
-   const alterarCheck = async (index: number, id: number) => {
+   const alterarCheck = async (index: Todo['id'], id: Todo['id']) => {
     const isVerify = lista[index].verify;
     const verify = fetch('api/todo', {
       method: "POST",
@@ -70,7 +70,7 @@ export default function Home() {
     );
   };
 
-  const apagar = async (index: number, idt: number) => {
+  const apagar = async (index: Todo['id'], idt: Todo['id']) => {
     const verify = fetch('api/todo', {
       method: "DELETE",
       body: JSON.stringify({ idt }),
@@ -96,7 +96,7 @@ export default function Home() {
         return toast.error("Precisa conter algum a fazer!!")
       }
 
-      let id: number = 0
+      let id: Todo['id'] = 0
       const verify = fetch('api/todo', {
         method: "PUT",
         body: JSON.stringify({ texto }),
