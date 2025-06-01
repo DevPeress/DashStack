@@ -23,7 +23,7 @@ export async function POST(req: Request) {
                 data: {
                     usuario: usuario,
                     email: email,
-                    senha: senhaProtegida,
+                    password: senhaProtegida,
                     todo: {}
                 }
             })
