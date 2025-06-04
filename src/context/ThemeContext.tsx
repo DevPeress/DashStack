@@ -20,16 +20,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       <html lang="pt-br" className={dark ? 'dark' : 'light'}>
         <body >
           <ContratarTeamProvider>
-          <ContratarContactProvider>
-            {children}
+            <ContratarContactProvider>
+              {children}
 
-            <Toaster toastOptions={{
-              style: {
-                userSelect: "none"
-              }
-            }}/>
-          </ContratarContactProvider>
-        </ContratarTeamProvider>
+              <Toaster toastOptions={{
+                style: {
+                  userSelect: "none"
+                }
+              }}/>
+            </ContratarContactProvider>
+          </ContratarTeamProvider>
         </body>
       </html>
     </ThemeContext.Provider>

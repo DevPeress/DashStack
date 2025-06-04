@@ -17,7 +17,7 @@ export default function Home() {
   const alterarFav = async (index: Todo['id'], idt: Todo['id']) => {
     const isFav = lista[index].fav;
     const verify = fetch('api/todo', {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify({ 
         idt,
         modo: "Fav"
@@ -42,10 +42,10 @@ export default function Home() {
     );
   };
 
-   const alterarCheck = async (index: Todo['id'], id: Todo['id']) => {
+  const alterarCheck = async (index: Todo['id'], id: Todo['id']) => {
     const isVerify = lista[index].verify;
     const verify = fetch('api/todo', {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify({ 
         id,
         modo: "Verify"
@@ -98,11 +98,10 @@ export default function Home() {
 
       let id: Todo['id'] = 0
       const verify = fetch('api/todo', {
-        method: "PUT",
+        method: "POST",
         body: JSON.stringify({ texto }),
       })
       
-
       await toast.promise(
         verify.then(res => res.json())
         .then(data => {

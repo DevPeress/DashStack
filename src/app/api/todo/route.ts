@@ -27,7 +27,7 @@ export async function GET() {
     }
 }
 
-export async function POST(req: Request) {
+export async function PUT(req: Request) {
     const body = await req.json();
     const { idt, modo } = body as { idt: number, modo: string };
 
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     }
 }
 
-export async function PUT(req: Request) {
+export async function POST(req: Request) {
     const body = await req.json();
     const { texto } = body as { texto: string };
 
@@ -150,7 +150,7 @@ export async function DELETE(req: Request) {
 
         return NextResponse.json({ mensagem: "To-do atualizado com sucesso!", updated, idt },{ status: 200 });
     } catch(error) {
-        console.error("[PUT To-Do]: ", error)
+        console.error("[DELETE To-Do]: ", error)
         return NextResponse.json({ mensagem: "Erro interno ao atualizar o to-do." },{ status: 500 });
     } finally {
         await prisma.$disconnect()
